@@ -1,52 +1,52 @@
-import csv
+def first_fit(blocks, processes):
+    """
+    First-Fit memory allocation (GUI-compatible)
 
-def allocate_first_fit(blocks_csv, processes_csv, output_csv):
+    blocks: list of dict
+        [{"block_id": "B1", "size": 100}, ...]
+
+    processes: list of dict
+        [{"process_id": "P1", "size": 212}, ...]
+
+    return: list of list
+        [process_id, process_size, block_id, remaining, status]
+    """
+
     memory_blocks = []
-    with open(blocks_csv, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            memory_blocks.append({
-                "block_id": row["block_id"],
-                "size": int(row["size"])
-            })
+    for b in blocks:
+        memory_blocks.append({
+            "block_id": b["block_id"],
+            "size": b["size"]
+        })
 
     results = []
 
-    with open(processes_csv, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for process in reader:
-            process_id = process["process_id"]
-            process_size = int(process["size"])
-            allocated = False
+    for p in processes:
+        allocated = False
 
-            for block in memory_blocks:
-                if block["size"] >= process_size:
-                    remaining = block["size"] - process_size
+        for block in memory_blocks:
+            if block["size"] >= p["size"]:
+                remaining = block["size"] - p["size"]
 
-                    results.append({
-                        "process_id": process_id,
-                        "process_size": process_size,
-                        "block_id": block["block_id"],
-                        "remaining": remaining,
-                        "status": "Allocated"
-                    })
+                results.append([
+                    p["process_id"],
+                    p["size"],
+                    block["block_id"],
+                    remaining,
+                    "Allocated"
+                ])
 
-                    block["size"] = remaining
-                    allocated = True
-                    break  # First-Fit
+                block["size"] = remaining
+                allocated = True
+                break  # First-Fit
 
-            if not allocated:
-                results.append({
-                    "process_id": process_id,
-                    "process_size": process_size,
-                    "block_id": "-",
-                    "remaining": "-",
-                    "status": "Failed"
-                })
-    with open(output_csv, "w", newline='', encoding="utf-8") as f:
-        writer = csv.DictWriter(
-            f,
-            fieldnames=["process_id", "process_size", "block_id", "remaining", "status"]
-        )
-        writer.writeheader()
-        writer.writerows(results)
+        if not allocated:
+            results.append([
+                p["process_id"],
+                p["size"],
+                "-",
+                "-",
+                "Failed"
+            ])
+
+    return results
