@@ -1,17 +1,4 @@
 def first_fit(blocks, processes):
-    """
-    First-Fit memory allocation (GUI-compatible)
-
-    blocks: list of dict
-        [{"block_id": "B1", "size": 100}, ...]
-
-    processes: list of dict
-        [{"process_id": "P1", "size": 212}, ...]
-
-    return: list of list
-        [process_id, process_size, block_id, remaining, status]
-    """
-
     memory_blocks = []
     for b in blocks:
         memory_blocks.append({
@@ -38,7 +25,7 @@ def first_fit(blocks, processes):
 
                 block["size"] = remaining
                 allocated = True
-                break  # First-Fit
+                break
 
         if not allocated:
             results.append([
