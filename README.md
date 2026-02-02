@@ -1,9 +1,18 @@
-## Project Structure
+# Memory Management Simulator
 
-memory_management/
-├── input/        # CSV input
-├── output/       # CSV output
-├── algorithms/   # First / Best / Worst Fit
-├── utils/        # CSV handling
-├── charts/       # Visualization
-├── main.py
+Simulate memory allocation using:
+- First-Fit
+- Best-Fit
+- Worst-Fit
+
+## How to Run
+1. Run `main.py`
+2. Load blocks.csv
+3. Load processes.csv
+4. Choose algorithm
+5. Click Run Simulation
+
+## Input Format
+- blocks.csv: block_id, size
+- processes.csv: process_id, size
+
